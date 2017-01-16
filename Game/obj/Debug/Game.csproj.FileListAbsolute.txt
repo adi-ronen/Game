@@ -1,0 +1,26 @@
+C:\Users\Dor Atzmon\Desktop\Labs\lab10\Game\Game\bin\Debug\Game.exe.config
+C:\Users\Dor Atzmon\Desktop\Labs\lab10\Game\Game\bin\Debug\Game.exe
+C:\Users\Dor Atzmon\Desktop\Labs\lab10\Game\Game\bin\Debug\Game.pdb
+C:\Users\Dor Atzmon\Desktop\Labs\lab10\Game\Game\obj\Debug\Game.csprojResolveAssemblyReference.cache
+C:\Users\Dor Atzmon\Desktop\Labs\lab10\Game\Game\obj\Debug\Game.exe
+C:\Users\Dor Atzmon\Desktop\Labs\lab10\Game\Game\obj\Debug\Game.pdb
+C:\Users\Dor Atzmon\Desktop\Game\Game\bin\Debug\Game.exe.config
+C:\Users\Dor Atzmon\Desktop\Game\Game\obj\Debug\Game.exe
+C:\Users\Dor Atzmon\Desktop\Game\Game\obj\Debug\Game.pdb
+C:\Users\Dor Atzmon\Desktop\Labs\lab10\Game\Game\bin\Debug\Player2DLL.dll
+C:\Users\Dor Atzmon\Desktop\Labs\lab10\Game\Game\bin\Debug\Player2DLL.pdb
+C:\Users\Dor Atzmon\Desktop\Game\Game\bin\Debug\Game.exe
+C:\Users\Dor Atzmon\Desktop\Game\Game\bin\Debug\Game.pdb
+C:\Users\Dor Atzmon\Desktop\Game\Game\bin\Debug\Player2DLL.dll
+C:\Users\Dor Atzmon\Desktop\Game\Game\bin\Debug\Player2DLL.pdb
+C:\Users\Dor Atzmon\Desktop\Game\Game\obj\Debug\Game.csprojResolveAssemblyReference.cache
+C:\Users\Dor Atzmon\Desktop\Programming Assignment 1\Game\Game\bin\Debug\Game.exe.config
+C:\Users\Dor Atzmon\Desktop\Programming Assignment 1\Game\Game\obj\Debug\Game.exe
+C:\Users\Dor Atzmon\Desktop\Programming Assignment 1\Game\Game\obj\Debug\Game.pdb
+C:\Users\Dor Atzmon\Desktop\Programming Assignment 1\Game\Game\bin\Debug\Game.exe
+C:\Users\Dor Atzmon\Desktop\Programming Assignment 1\Game\Game\bin\Debug\Game.pdb
+C:\Users\Dor Atzmon\Desktop\Programming Assignment 1\Game\Game\obj\Debug\Game.csprojResolveAssemblyReference.cache
+C:\Users\Dor Atzmon\Desktop\Programming Assignment 1\Game\Game\bin\Debug\ClassLibrary1.dll
+D:\ADI\GitHub\Game\Game\bin\Debug\Game.exe.config
+D:\ADI\GitHub\Game\Game\obj\Debug\Game.exe
+D:\ADI\GitHub\Game\Game\obj\Debug\Game.pdb
