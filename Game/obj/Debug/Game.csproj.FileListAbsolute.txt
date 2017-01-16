@@ -24,3 +24,7 @@ C:\Users\Dor Atzmon\Desktop\Programming Assignment 1\Game\Game\bin\Debug\ClassLi
 D:\ADI\GitHub\Game\Game\bin\Debug\Game.exe.config
 D:\ADI\GitHub\Game\Game\obj\Debug\Game.exe
 D:\ADI\GitHub\Game\Game\obj\Debug\Game.pdb
+D:\ADI\GitHub\Game\Game\bin\Debug\Game.exe
+D:\ADI\GitHub\Game\Game\bin\Debug\Game.pdb
+D:\ADI\GitHub\Game\Game\bin\Debug\ClassLibrary1.dll
+D:\ADI\GitHub\Game\Game\obj\Debug\Game.csprojResolveAssemblyReference.cache

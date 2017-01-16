@@ -12,21 +12,14 @@ namespace Game
         public int      _cols;
         public char[,]  _board;
         public int      _squaresLeft;
-        public Board
-        (
-            int rows, 
-            int cols
-        )
+        public Board(int rows, int cols)
         {
             _rows           = rows;
             _cols           = cols;
             _squaresLeft    = rows * cols;
             createBoard();
         }
-        public Board
-        (
-            Board toCopy
-        )
+        public Board(Board toCopy)
         {
             _rows           = toCopy._rows;
             _cols           = toCopy._cols;
@@ -42,10 +35,7 @@ namespace Game
                     _board[i,j] = 'X';
                 }
         }
-        private void copyBoard
-        (
-            char[,] board
-        )
+        private void copyBoard(char[,] board)
         {
             _board = new char[_rows, _cols];
             for (int i = 0; i < _rows; i++)
@@ -61,11 +51,7 @@ namespace Game
             return false;
         }
        
-        public bool fillPlayerMove
-        (
-            int row, 
-            int col
-        )
+        public bool fillPlayerMove(int row, int col)
         {
             if (!isLegalMove(row, col))
                 return false;
@@ -73,26 +59,13 @@ namespace Game
             return true;
         }
 
-        public bool isLegalMove
-        (
-            int row,
-            int col
-        )
+        public bool isLegalMove(int row,int col)
         {
-            if (row > _rows - 1 ||
-                col > _cols - 1 ||
-                row < 0         ||
-                col < 0         ||
-                _board[row, col] != 'X')
+            if (row > _rows - 1||col > _cols - 1||row < 0||col < 0||_board[row, col] != 'X')
                 return false;
             return true;
         }
-
-        private void deleteSquares
-        (
-            int row,
-            int col
-        )
+        private void deleteSquares(int row,int col)
         {
             for (int i = row; i < _rows; i++)
                 for (int j = col; j < _cols; j++)
@@ -102,7 +75,6 @@ namespace Game
                         _squaresLeft--;
                     }
         }
-
         public void printTheBoard()
         {
             for (int i = 0; i < _rows; i++)
