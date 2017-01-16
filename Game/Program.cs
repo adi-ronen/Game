@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using ClassLibrary1;
+//using ClassLibrary1;
 
 namespace Game
 {
     class Program
     {
-        public const int m_numberOfGames      = 100;
-        public const int m_boardRows          = 8;
-        public const int m_boardCols          = 6;
-        public const int m_gameLevel          = 1;
+        public const int m_numberOfGames      = 10;
+        public const int m_boardRows          = 5;
+        public const int m_boardCols          = 4;
+        public const int m_gameLevel          = 5;
         public const bool m_printAllResults   /*= false; */ = true;
         static void Main(string[] args)
         {
@@ -27,7 +27,6 @@ namespace Game
             int player2wins         = 0;
             bool legalTurn          = true;
             Random random           = new Random();
-                   
             for (int game = 0; game < m_numberOfGames; game++)
             {
                 if (game > 0)
@@ -44,8 +43,7 @@ namespace Game
                     {
                         if (playerTurn == '1')
                         {
-                            legalTurn = Turn(board, playerTurn, true);
-                            //Your Turn             
+                            legalTurn = Turn(board, playerTurn, true);             //Your Turn             
                         }
                         else if (playerTurn == '2')
                         {
@@ -64,18 +62,16 @@ namespace Game
                 } while (winner == ' ');
 
                 if (winner == '1')
-                {
-                    player1wins++;  
-                }
+                    player1wins++;
                 else if (winner == '2')
-                {
-                    player2wins++;      
-                }
+                    player2wins++;
             }
 
             if(m_printAllResults)
-                printAllGamesResult(player1wins, player2wins);//Print all games result        
+                printAllGamesResult(player1wins, player2wins);                  //Print all games result
+             
         }
+
         private static Board createEmptyBoard()
         {
             return new Board(m_boardRows, m_boardCols);
@@ -89,20 +85,29 @@ namespace Game
                 playerTurn = '1';
         }
 
-        private static void printAllGamesResult(int player1wins, int player2wins)
+        private static void printAllGamesResult
+        (
+            int player1wins, 
+            int player2wins
+        )
         {
             Console.WriteLine("Player1 wins:  " + player1wins + "\nPlayer2 wins:  " + player2wins);
             Console.ReadLine();
         }
 
-        private static bool Turn(Board board, char player,bool timeLimit)
+        private static bool Turn
+        (
+            Board board, 
+            char player,
+            bool timeLimit
+        )
         {
             int stopMilliseconds;
             if (timeLimit == false)
                 stopMilliseconds = 100;
             else
                 stopMilliseconds = timeByLevel();
-            GC.Collect();
+            System.GC.Collect();
             Stopwatch timer      = Stopwatch.StartNew();
             Tuple<int, int> move = new Tuple<int, int>(-1, -1);
             if (player == '1')
@@ -111,11 +116,13 @@ namespace Game
                 move = (new Player2()).playYourTurn(new Board(board), new TimeSpan(0, 0, 0, 0, stopMilliseconds));
             timer.Stop();
             TimeSpan timespan    = timer.Elapsed;
-            if (timespan.TotalMilliseconds > stopMilliseconds ||!board.isLegalMove(move.Item1, move.Item2))
+            //Console.WriteLine(timespan.TotalMilliseconds);
+            if (timespan.TotalMilliseconds > stopMilliseconds ||
+                !board.isLegalMove(move.Item1, move.Item2))
                 return false;
             else
             {
-                board.fillPlayerMove(move.Item1, move.Item2);            
+                board.fillPlayerMove(move.Item1, move.Item2);
                 return true;
             }
             
