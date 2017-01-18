@@ -28,3 +28,10 @@ D:\ADI\GitHub\Game\Game\bin\Debug\Game.exe
 D:\ADI\GitHub\Game\Game\bin\Debug\Game.pdb
 D:\ADI\GitHub\Game\Game\bin\Debug\ClassLibrary1.dll
 D:\ADI\GitHub\Game\Game\obj\Debug\Game.csprojResolveAssemblyReference.cache
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\bin\Debug\Game.exe.config
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\obj\Debug\Game.exe
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\obj\Debug\Game.pdb
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\bin\Debug\Game.exe
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\bin\Debug\Game.pdb
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\bin\Debug\ClassLibrary1.dll
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\obj\Debug\Game.csprojResolveAssemblyReference.cache

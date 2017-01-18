@@ -6,3 +6,11 @@ D:\ADI\GitHub\Game\Game\bin\Release\Game.dll
 D:\ADI\GitHub\Game\Game\bin\Release\Game.exe.config
 D:\ADI\GitHub\Game\Game\bin\Release\Game.exe
 D:\ADI\GitHub\Game\Game\obj\Release\Game.exe
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\bin\Release\Game.exe.config
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\obj\Release\Game.exe
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\obj\Release\Game.pdb
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\bin\Release\Game.exe
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\bin\Release\Game.pdb
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\bin\Release\ClassLibrary1.dll
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\bin\Release\Game.dll
+C:\Users\Gal Gueta\Documents\GitHub\Game\Game\obj\Release\Game.csprojResolveAssemblyReference.cache

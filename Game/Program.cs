@@ -50,7 +50,7 @@ namespace Game
                             legalTurn = Turn(board, playerTurn, false);
                         }
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         legalTurn = false;
                     }

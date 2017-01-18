@@ -17,6 +17,7 @@ namespace Game
             Stopwatch sw = new Stopwatch();
             sw.Start();
             Tuple<int, int> result = null;
+            Tuple<int, int> resultTemp = null;
             Mutex resultTupleMute = new Mutex();
             Semaphore queueSem = new Semaphore(0,1000);
             Queue<Tuple<int, int>> nextTuples = new Queue<Tuple<int, int>>();
@@ -110,53 +111,74 @@ namespace Game
                 result = new Tuple<int, int>(FirstLineRow, longestCol);
             }
 
-            //Thread t = new Thread(() =>
-            //  {
-            //      for (int row = FirstLineRow; row >=0; row--)
-            //      {
-            //          for (int col = FirstLineCol; col >= 0; col--)
-            //          {
-            //              if (board.isLegalMove(row, col))
-            //              {
-            //                  nextTuples.Enqueue(new Tuple<int, int>(row, col));
-            //                  queueSem.Release(1);
-            //              }
-            //          }
-            //      }
+            Object _lock = new object();
 
-            //  });
-            //threads.Add(t);
-            //t.Start();
+            Thread t = new Thread(() =>
+              {
+                  for (int row = FirstLineRow; row >= 0; row--)
+                  {
+                      for (int col = FirstLineCol; col >= 0; col--)
+                      {
+                          if (board.isLegalMove(row, col))
+                          {
+                              lock (_lock)
+                              {
+                                  nextTuples.Enqueue(new Tuple<int, int>(row, col));
+                                  queueSem.Release(1);
+                              }
+                          }
+                      }
+                  }
 
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    Thread finder = new Thread(() =>
-            //      {
-            //          while (true)
-            //          {
-            //              Board temp = new Board(board);
-            //              queueSem.WaitOne();
-            //              Tuple<int, int> q = nextTuples.Dequeue();
-            //              temp.fillPlayerMove(q.Item1, q.Item2);
-            //              if (rules(temp))
-            //              {
-            //                  resultTupleMute.WaitOne();
-            //                  result = q;
-            //                  resultTupleMute.ReleaseMutex();
-            //              }
-            //          }
-            //      });
-            //    threads.Add(finder);
-            //    finder.Start();
-            //}
+              });
+            threads.Add(t);
+            t.Start();
 
-            //sw.Stop();
-            //Thread.Sleep(timesup.Milliseconds - (int) sw.ElapsedMilliseconds - 5);
-            //foreach (Thread th in threads)
-            //{
-            //    th.Abort();
-            //}
 
+            Thread threadMaker = new Thread(() =>
+              {
+
+                  for (int i = 0; i < 10 && timesup.Milliseconds - (int)sw.ElapsedMilliseconds > 30; i++)
+                  {
+                      Thread finder = new Thread(() =>
+                      {
+                        while (true && resultTemp == null)
+                        {
+                            Board temp = new Board(board);
+                            queueSem.WaitOne();
+                            Tuple<int, int> q;
+                            lock (_lock)
+                            {
+                                q = nextTuples.Dequeue();
+                            }
+
+                            temp.fillPlayerMove(q.Item1, q.Item2);
+                            if (rules(temp))
+                            {
+                                resultTupleMute.WaitOne();
+                                if (resultTemp == null)
+                                    resultTemp = q;
+                                resultTupleMute.ReleaseMutex();
+                            }
+                        }
+                    });
+                      threads.Add(finder);
+                      finder.Start();
+                  }
+              });
+            //threads.Add(threadMaker);
+            threadMaker.Start();
+
+            sw.Stop();
+            Console.WriteLine(sw.ElapsedMilliseconds);
+            Thread.Sleep(timesup.Milliseconds - (int)sw.ElapsedMilliseconds - 5);
+            threadMaker.Abort();
+            foreach (Thread th in threads)
+            {
+                th.Abort();
+            }
+            if (resultTemp != null)
+                result = resultTemp;
             return result;
 
         }
