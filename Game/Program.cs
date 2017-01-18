@@ -12,9 +12,9 @@ namespace Game
     class Program
     {
         public const int m_numberOfGames      = 10;
-        public const int m_boardRows          = 5;
-        public const int m_boardCols          = 4;
-        public const int m_gameLevel          = 5;
+        public const int m_boardRows          = 20;
+        public const int m_boardCols          = 35;
+        public const int m_gameLevel          = 1;
         public const bool m_printAllResults   /*= false; */ = true;
         static void Main(string[] args)
         {
@@ -49,12 +49,12 @@ namespace Game
                         {
                             legalTurn = Turn(board, playerTurn, false);
                         }
-                    }
+                }
                     catch (Exception e)
-                    {
-                        legalTurn = false;
-                    }
-                    switchTurns(ref playerTurn);
+                {
+                    legalTurn = false;
+                }
+                switchTurns(ref playerTurn);
                     if (board.isTheGameEnded() || !legalTurn)
                     {
                         winner = playerTurn;
@@ -104,25 +104,38 @@ namespace Game
         {
             int stopMilliseconds;
             if (timeLimit == false)
-                stopMilliseconds = 100;
+                stopMilliseconds = 50;
             else
                 stopMilliseconds = timeByLevel();
             System.GC.Collect();
             Stopwatch timer      = Stopwatch.StartNew();
             Tuple<int, int> move = new Tuple<int, int>(-1, -1);
             if (player == '1')
+            {
+                //Stopwatch sw = new Stopwatch();
+                //sw.Start();
                 move = (new Player1()).playYourTurn(new Board(board), new TimeSpan(0, 0, 0, 0, stopMilliseconds));
+                //Console.WriteLine(sw.Elapsed);
+            }
             else if (player == '2')
                 move = (new Player2()).playYourTurn(new Board(board), new TimeSpan(0, 0, 0, 0, stopMilliseconds));
             timer.Stop();
             TimeSpan timespan    = timer.Elapsed;
+            //
             //Console.WriteLine(timespan.TotalMilliseconds);
             if (timespan.TotalMilliseconds > stopMilliseconds ||
+
                 !board.isLegalMove(move.Item1, move.Item2))
+            {
+                //board.printTheBoard();
+                Console.WriteLine(player + " fail: " + timer.Elapsed);
                 return false;
+            }
             else
             {
+                Console.WriteLine(player + " succ: " + timer.Elapsed);
                 board.fillPlayerMove(move.Item1, move.Item2);
+                //board.printTheBoard();
                 return true;
             }
             

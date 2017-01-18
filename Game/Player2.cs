@@ -39,6 +39,8 @@ namespace Game
             Tuple<int, int> toReturn = null;
             long timeleft = timesup.Milliseconds;
             Stopwatch stopWatch = new Stopwatch();
+            possibleMoves = new List<Tuple<int, int>>();
+
             stopWatch.Start();
             Thread t = new Thread(() => startMinMax(board));
             t.Start();

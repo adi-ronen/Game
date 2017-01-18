@@ -7,6 +7,14 @@ namespace Game
 {
     public class Player1
     {
+            Tuple<int, int> result = null;
+            Tuple<int, int> resultTemp = null;
+            Mutex resultTupleMute = new Mutex();
+        Semaphore queueSem;
+            Queue<Tuple<int, int>> nextTuples = new Queue<Tuple<int, int>>();
+            List<Thread> threads = new List<Thread>();
+            bool fin = false;
+            int FirstLineCol=1, FirstLineRow=1;
         public void getPlayers(ref string player1_1, ref string player1_2)  //fill players ids
         {
             player1_1 = "303004030";  //id1
@@ -14,40 +22,38 @@ namespace Game
         }
         public Tuple<int, int> playYourTurn(Board board, TimeSpan timesup)
         {
+            queueSem = new Semaphore(0, board._squaresLeft);
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            Tuple<int, int> result = null;
-            Tuple<int, int> resultTemp = null;
-            Mutex resultTupleMute = new Mutex();
-            Semaphore queueSem = new Semaphore(0,1000);
-            Queue<Tuple<int, int>> nextTuples = new Queue<Tuple<int, int>>();
-            List<Thread> threads = new List<Thread>();
+
             #region rules
-            int FirstLineCol = board._cols-1;
+            FirstLineCol = board._cols - 1;
             while (FirstLineCol > 0 && board._board[0, FirstLineCol] == ' ') FirstLineCol--;
 
-            int FirstLineRow = board._rows - 1;
+            FirstLineRow = board._rows - 1;
             while (FirstLineRow > 0 && board._board[FirstLineRow, 0] == ' ') FirstLineRow--;
- 
-            if(board._board[1,1]==' ')
-            {   
+
+            if (board._board[1, 1] == ' ')
+            {
                 if (FirstLineCol - FirstLineRow > 0)
                 {
                     return new Tuple<int, int>(0, FirstLineRow+1);
                 }
-                else
+                else if (FirstLineCol - FirstLineRow < 0)
                 {
                     return new Tuple<int, int>(FirstLineCol+1, 0);
                 }
             }
-
-            if (FirstLineRow == FirstLineCol)
+            else if (FirstLineRow == FirstLineCol)
+            {
+                //board.printTheBoard();
                 return new Tuple<int, int>(1, 1);
+            }
 
             int SecendLineRow = FirstLineRow;
-            while (board._cols > 0 && SecendLineRow > 0 && board._board[SecendLineRow,1] == ' ') SecendLineRow--;
+            while (board._cols > 1 && SecendLineRow > 0 && board._board[SecendLineRow, 1] == ' ') SecendLineRow--;
 
-            if (FirstLineCol == 1)
+            if (FirstLineCol == 1 && resultTemp==null)
             {
                 int dist = FirstLineRow - SecendLineRow - 1;
                 if (dist > 0)
@@ -56,93 +62,127 @@ namespace Game
                 }
                 else if (dist < 0)
                 {
-                    return new Tuple<int, int>(FirstLineRow , 1);
+                    return new Tuple<int, int>(FirstLineRow, 1);
                 }
             }
-            else if(FirstLineRow - SecendLineRow - 1 == 0)
+            else if (FirstLineRow - SecendLineRow - 1 == 0 && resultTemp == null)
             {
-                return new Tuple<int, int>(0, 2);
+                return new Tuple<int, int>(0,2);
             }
 
 
             int SecendLineCol = FirstLineCol;
-            while (board._rows>1&& SecendLineCol > 0 && board._board[1, SecendLineCol] == ' ') SecendLineCol--;
+            while (board._rows > 1 && SecendLineCol > 0 && board._board[1, SecendLineCol] == ' ') SecendLineCol--;
 
-            if (FirstLineRow == 1)
+            if (FirstLineRow == 1 && resultTemp == null)
             {
                 int dist = FirstLineCol - SecendLineCol - 1;
                 if (dist > 0)
                 {
                     return new Tuple<int, int>(0, FirstLineCol + 1 - dist);
                 }
-                else if (dist < 0) 
+                else if (dist < 0)
                 {
                     return new Tuple<int, int>(1, FirstLineCol);
                 }
             }
-            else if (FirstLineCol - SecendLineCol - 1 == 0)
+            else if (FirstLineCol - SecendLineCol - 1 == 0 && resultTemp == null)
             {
-                return new Tuple<int, int>(2, 0);
+                return new Tuple<int, int>(2,0);
             }
 
             //gun mode
-            if (FirstLineRow == 3 && FirstLineCol == 2 && board._board[2, 1] != ' ')
+            if (FirstLineRow == 3 && FirstLineCol == 2 && board._board[2, 1] != ' ' && resultTemp == null)
             {
                 return new Tuple<int, int>(2, 1);
             }
 
-            if (FirstLineRow == 2 && FirstLineCol == 3 && board._board[1, 2] != ' ')
+            if (FirstLineRow == 2 && FirstLineCol == 3 && board._board[1, 2] != ' ' && resultTemp == null)
             {
                 return new Tuple<int, int>(1, 2);
             }
 
             #endregion
 
-            if (FirstLineCol> FirstLineRow)
+            Thread turn = new Thread(() =>
+              {
+                  startSearching(board);
+              });
+            turn.Start();
+            //sw.Stop();
+            //Console.WriteLine(sw.ElapsedMilliseconds);
+            Thread.Sleep(timesup.Milliseconds - (int)sw.ElapsedMilliseconds -10);
+            //threadMaker.Abort();
+            //foreach (Thread th in threads)
+            //{
+            //    th.Abort();
+            //}
+            //sw.Restart();
+            fin = true;
+            if (resultTemp == null)
             {
-                int longestRow = 0;
-                while (FirstLineRow >= longestRow + 1 && board._board[longestRow + 1, FirstLineCol] != ' ') longestRow++;
-                result = new Tuple<int, int>(longestRow, FirstLineCol);
+
+                if (FirstLineCol > FirstLineRow)
+                {
+                    int longestRow = 0;
+                    while (FirstLineRow >= longestRow + 1 && board._board[longestRow + 1, FirstLineCol] != ' ') longestRow++;
+                    result = new Tuple<int, int>(longestRow, FirstLineCol);
+                }
+                else
+                {
+                    int longestCol = 0;
+                    while (FirstLineCol >= longestCol + 1 && board._board[FirstLineRow, longestCol + 1] != ' ') longestCol++;
+                    result = new Tuple<int, int>(FirstLineRow, longestCol);
+                }
             }
             else
-            {
-                int longestCol = 0;
-                while (FirstLineCol >= longestCol + 1 && board._board[FirstLineRow, longestCol + 1] != ' ') longestCol++;
-                result = new Tuple<int, int>(FirstLineRow, longestCol);
-            }
+                result = resultTemp;
+            //sw.Stop();
+            //Console.WriteLine(sw.ElapsedMilliseconds);
+            //Console.WriteLine((int)sw.ElapsedMilliseconds);
+            return result;
+
+        }
+
+        private void startSearching(Board board)
+        {
+            
+
+
 
             Object _lock = new object();
 
-            Thread t = new Thread(() =>
-              {
-                  for (int row = FirstLineRow; row >= 0; row--)
-                  {
-                      for (int col = FirstLineCol; col >= 0; col--)
-                      {
-                          if (board.isLegalMove(row, col))
-                          {
-                              lock (_lock)
-                              {
-                                  nextTuples.Enqueue(new Tuple<int, int>(row, col));
-                                  queueSem.Release(1);
-                              }
-                          }
-                      }
-                  }
 
-              });
+            Thread t = new Thread(() =>
+            {
+                for (int row = FirstLineRow; row >= 0&&!fin; row--)
+                {
+                    for (int col = FirstLineCol; col >= 0&&!fin; col--)
+                    {
+                        if (board.isLegalMove(row, col))
+                        {
+                            lock (_lock)
+                            {
+                                nextTuples.Enqueue(new Tuple<int, int>(row, col));
+                                queueSem.Release(1);
+                            }
+                        }
+                    }
+                }
+
+            });
             threads.Add(t);
             t.Start();
 
 
             Thread threadMaker = new Thread(() =>
-              {
+            {
 
-                  for (int i = 0; i < 10 && timesup.Milliseconds - (int)sw.ElapsedMilliseconds > 30; i++)
-                  {
-                      Thread finder = new Thread(() =>
-                      {
-                        while (true && resultTemp == null)
+                for (int i = 0; i < 10&&resultTemp==null; i++)
+                {
+                    Thread finder = new Thread(() =>
+                    {
+                        while (!fin && resultTemp == null)
                         {
                             Board temp = new Board(board);
                             queueSem.WaitOne();
@@ -162,24 +202,12 @@ namespace Game
                             }
                         }
                     });
-                      threads.Add(finder);
-                      finder.Start();
-                  }
-              });
+                    threads.Add(finder);
+                    finder.Start();
+                }
+            });
             //threads.Add(threadMaker);
             threadMaker.Start();
-
-            sw.Stop();
-            Console.WriteLine(sw.ElapsedMilliseconds);
-            Thread.Sleep(timesup.Milliseconds - (int)sw.ElapsedMilliseconds - 5);
-            threadMaker.Abort();
-            foreach (Thread th in threads)
-            {
-                th.Abort();
-            }
-            if (resultTemp != null)
-                result = resultTemp;
-            return result;
 
         }
 
